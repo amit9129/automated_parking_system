@@ -66,6 +66,7 @@ def entry():
         return jsonify({'message': 'Unable to capture image'}), 500
 
     vehicle_number = read_number_plate(frame)
+    print(f"Detected vehicle number: {vehicle_number}")  # Debugging line
     if vehicle_number is None or vehicle_number.strip() == '':
         return jsonify({'message': 'Failed to capture number plate'}), 500
 
@@ -102,6 +103,7 @@ def exit():
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM vehicles WHERE vehicle_number = ?', (vehicle_number,))
         vehicle = cursor.fetchone()
+        print(f"Fetched vehicle record: {vehicle}")  # Debugging line
 
     if vehicle is None:
         return jsonify({'message': 'Vehicle not found!'}), 404
