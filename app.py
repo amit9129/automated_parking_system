@@ -5,6 +5,7 @@ import qrcode
 import datetime
 import os
 import sqlite3
+from db_setup import init_db  # Import the init_db function
 
 app = Flask(__name__)
 
@@ -13,23 +14,6 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 
 # Database configuration
 DATABASE = 'vehicles.db'
-
-# Initialize the database
-def init_db():
-    with sqlite3.connect(DATABASE) as conn:
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS vehicles (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                vehicle_number TEXT NOT NULL,
-                entry_time TEXT NOT NULL,
-                slot INTEGER NOT NULL,
-                amount INTEGER NOT NULL,
-                exit_time TEXT,
-                is_paid BOOLEAN DEFAULT 0
-            )
-        ''')
-        conn.commit()
 
 def read_number_plate(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
